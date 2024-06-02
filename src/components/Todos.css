@@ -1,0 +1,16 @@
+.card-color{
+    background: rgb(117, 238, 117);
+}
+
+  .card-completed{
+    background: green;
+    color: white;
+  }
+  .card-notCompleted{
+    background:rgb(215, 75, 99);
+    color: white;
+  }
+  .contentAlign{
+    text-align: center;
+  }
+  
