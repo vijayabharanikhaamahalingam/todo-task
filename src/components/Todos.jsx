@@ -19,7 +19,7 @@ props.onEdit(props.data.name,props.data.description,props.data.index)
   }
 
   const handleDelete=(e)=>{
-    props.onDelete(props.data.index)
+    props.delete(props.data.index)
   }
   return (
     <div className="col mb-5">

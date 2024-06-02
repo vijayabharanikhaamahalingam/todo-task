@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import Todos from "./Todos"
 
 const Add = () => {
@@ -12,8 +12,9 @@ const Add = () => {
     const [isEdit,setIsEdit]=useState(false)
     const [editIndex,setEditIndex]=useState(0);
     const [filteredCards,setFilteredCards] = useState([])
+    
 
-
+    
     const statusChange=(status,index)=>{
       console.log(cards)
       cards[index].props.data.status=status
@@ -73,11 +74,11 @@ const Add = () => {
         
     }
 
-    const handleDelete=(deleteIndex)=>{
+    const deleteVal=(deleteIndex)=>{
       console.log(cards)
-        // cards.splice(deleteIndex,1)
-        // setIndex(index-1)
-        // setCards({cards:[...cards]})
+        cards.splice(deleteIndex,1)
+        setIndex(index-1)
+        setCards({cards:[...cards]})
     }
 
     const handleSubmit = (e) => {
@@ -96,7 +97,7 @@ const Add = () => {
         key={editIndex}
         data={data}
         onEdit={edit}
-        onDelete={handleDelete}
+        delete={deleteVal}
         onStatusChange={statusChange}
         />)
     } else {
@@ -105,7 +106,7 @@ const Add = () => {
             key={index}
             data={data}
             onEdit={edit}
-            onDelete={handleDelete}
+            delete={deleteVal}
             onStatusChange={statusChange}
             />
           );
@@ -119,8 +120,8 @@ const Add = () => {
     }
     return (
         <div className="contentAlign">
-            <input type="text" id="name" placeholder="todo Name" value={name} onChange={handleName} />
-            <input type="text" id="description" placeholder="todo description" value={description} onChange={handleDescription} />
+            <input type="text" id="name" placeholder="Task Name" className="me-2" value={name} onChange={handleName} />
+            <input type="text" id="description" placeholder="Task Description" className="me-2" value={description} onChange={handleDescription} />
             <button className="btn btn-success btn-sm" onClick={handleSubmit} disabled={!(name && description)}>Add Todo</button>
             {
             (cards.length>0) &&
