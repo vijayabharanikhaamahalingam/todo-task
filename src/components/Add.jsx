@@ -75,13 +75,11 @@ const Add = () => {
     }
 
     const deleteVal=(deleteIndex)=>{
-      // useEffect(()=>{
         console.log(cards)
         setCards(cardVal=>{
-          const deletedCards = cardVal.cards?.filter((card,index)=>index!=deleteIndex).map(data=>data)
+          const deletedCards = cardVal.cards?.filter((card,index)=>card.props.data.index!=deleteIndex).map(data=>data)
          return {cards:[...deletedCards]}
         })
-        // cards.splice(deleteIndex,1)
         setIndex(indexVal=>{
           if(indexVal==0 || indexVal==1){
           return 0
@@ -91,8 +89,6 @@ const Add = () => {
           return indexValue
           }
         })
-        // setCards({cards:[...cards]})
-      // })
       
     }
 
@@ -108,20 +104,25 @@ const Add = () => {
       
 
     if(isEdit){
-    //  setCards((cardVal)=>{
-    //   cardVal.cards.map((card)=>
-    //     card.props.data.index === editIndex ? {
-    //       ...card.props,data:data
-    //     } : {...card,data:data}
-    //   )
-    // }
-    // )
-    setCards(cardVal=>({
-      ...cardVal,
-      cards:cardVal.cards.map((cardEdit=>
-        cardEdit.props.data.index === editIndex ? data:data)
+    setCards(cardVal=>{
+      const edited = cardVal.cards.map(cardEdit=> {
+        if(cardEdit.props.data.index === editIndex) {
+          cardEdit = <Todos
+          key={index}
+          data={data}
+          onEdit={edit}
+          delete={deleteVal}
+          onStatusChange={statusChange}
+          />
+          return cardEdit
+        } else {
+          return cardEdit
+        }
+      }
       )
-    }))
+      return {cards:[...edited]}
+    }    
+  )
     } else {
         cards.push(
             <Todos
@@ -133,8 +134,9 @@ const Add = () => {
             />
           );
         setIndex(index+1)
+        setCards({cards:[...cards]})
     }
-      setCards({cards:[...cards]})
+      
       setName("")
       setDescription("")
       setIsEdit(false)
