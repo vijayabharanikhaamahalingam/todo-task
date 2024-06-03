@@ -14,7 +14,7 @@ const Todos = (props) => {
   }
 
   const edit=(e)=>{
-props.onEdit(props.data.name,props.data.description,props.data.index)
+props.onEdit(props.data.name,props.data.description,props.data.index,props.data.status)
 
   }
 
@@ -24,10 +24,10 @@ props.onEdit(props.data.name,props.data.description,props.data.index)
   return (
     <div className="col mb-5">
       
-      <div className="card-color card h-100 w-100">
+      <div className="card-color card h-100 w-100 text-start">
 
         <div className="card-body p-4">
-          <div className="text-center">
+          <div className="fw-bolder">
 
             <p>Name:{props.data.name}</p>
             <p>Description:{props.data.description}</p>

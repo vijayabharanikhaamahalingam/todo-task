@@ -6,7 +6,7 @@ const Add = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [{cards},setCards] = useState({cards:[]})
-    const [index,setIndex] = useState(0)
+    const [index,setIndex] = useState(-1)
     const [status,setStatus] = useState("notCompleted")
     const [selectCss,setSelectCss] = useState("card-notCompleted")
     const [isEdit,setIsEdit]=useState(false)
@@ -15,11 +15,34 @@ const Add = () => {
     
 
     
-    const statusChange=(status,index)=>{
-      console.log(cards)
-      cards[index].props.data.status=status
-      setCards({cards:[...cards]})
+    const statusChange=(changedStatus,statusChangeIndex)=>{
+     
+      const statusChangeData={
+        name:name,
+        description:description,
+        index:statusChangeIndex,
+        status:changedStatus
 
+}
+      setCards(cardVal=>{
+        const edited = cardVal.cards.map(cardEdit=> {
+          if(cardEdit.props.data.index === statusChangeIndex) {
+            cardEdit = <Todos
+            key={statusChangeIndex}
+            data={statusChangeData}
+            onEdit={edit}
+            delete={deleteVal}
+            onStatusChange={statusChange}
+            />
+            return cardEdit
+          } else {
+            return cardEdit
+          }
+        }
+        )
+        return {cards:Array.from(new Set([...edited]))}
+      }    
+    )
     }
 
     const handleFilter=(e)=>{
@@ -66,11 +89,12 @@ const Add = () => {
 
 
 
-    const edit=(name,description,index)=>{
+    const edit=(name,description,index,status)=>{
         setName(name);
         setDescription(description);
         setEditIndex(index);
         setIsEdit(true)
+        setStatus(status)
         
     }
 
@@ -79,15 +103,6 @@ const Add = () => {
         setCards(cardVal=>{
           const deletedCards = cardVal.cards?.filter((card,index)=>card.props.data.index!=deleteIndex).map(data=>data)
          return {cards:[...deletedCards]}
-        })
-        setIndex(indexVal=>{
-          if(indexVal==0 || indexVal==1){
-          return 0
-          } else {
-          const indexValue = indexVal-2;
-          console.log(indexValue)
-          return indexValue
-          }
         })
       
     }
@@ -104,12 +119,19 @@ const Add = () => {
       
 
     if(isEdit){
+      const editData={
+        name:name,
+        description:description,
+        index:editIndex,
+        status:status
+
+}
     setCards(cardVal=>{
       const edited = cardVal.cards.map(cardEdit=> {
         if(cardEdit.props.data.index === editIndex) {
           cardEdit = <Todos
-          key={index}
-          data={data}
+          key={editIndex}
+          data={editData}
           onEdit={edit}
           delete={deleteVal}
           onStatusChange={statusChange}
@@ -120,10 +142,11 @@ const Add = () => {
         }
       }
       )
-      return {cards:[...edited]}
+      return {cards:Array.from(new Set([...edited]))}
     }    
   )
     } else {
+      setIndex(index+1)
         cards.push(
             <Todos
             key={index}
@@ -133,12 +156,13 @@ const Add = () => {
             onStatusChange={statusChange}
             />
           );
-        setIndex(index+1)
-        setCards({cards:[...cards]})
+       
+          setCards({cards:Array.from(new Set([...cards]))})
     }
       
       setName("")
       setDescription("")
+      setStatus("notCompleted")
       setIsEdit(false)
       
     }
